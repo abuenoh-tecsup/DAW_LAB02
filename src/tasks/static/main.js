@@ -59,6 +59,34 @@ function renderTaskList(tasks) {
     taskListContainer.innerHTML = tableHTML;
 }
 
+// Obtener la clase CSS del badge de prioridad
+function getPriorityBadgeClass(priority) {
+    if (priority === 'high') return 'bg-danger';
+    if (priority === 'medium') return 'bg-warning text-dark';
+    return 'bg-success';
+}
+
+// Obtener el texto de prioridad
+function getPriorityText(priority) {
+    if (priority === 'high') return 'High';
+    if (priority === 'medium') return 'Medium';
+    return 'Low';
+}
+
+// Obtener la clase CSS del badge de estado
+function getStatusBadgeClass(status) {
+    if (status === 'completed') return 'bg-success';
+    if (status === 'pending') return 'bg-warning text-dark';
+    return 'bg-secondary';
+}
+
+// Obtener el texto del estado
+function getStatusText(status) {
+    if (status === 'completed') return 'Completed';
+    if (status === 'pending') return 'Pending';
+    return 'Unknown';
+}
+
 // Configurar el formulario de creación y edición de tareas
 function setupCreateTaskForm() {
     const form = document.getElementById('task-form');
@@ -73,7 +101,7 @@ function setupCreateTaskForm() {
 // Crear una tarea
 function createTask() {
     let taskData = getFormData();
-    axios.post('/api/tasks/', taskData)
+    axios.post('/api/tasks/create/', taskData)
         .then(() => {
             alert('Task created successfully!');
             window.location.href = '/tasks';
@@ -84,12 +112,24 @@ function createTask() {
 // Actualizar una tarea existente
 function updateTask(taskId) {
     let taskData = getFormData();
-    axios.put(`/api/tasks/${taskId}/`, taskData)
+    axios.put(`/api/tasks/update/${taskId}/`, taskData)
         .then(() => {
             alert('Task updated successfully!');
             window.location.href = '/tasks';
         })
         .catch(error => handleFormError(error));
+}
+
+// Eliminar una tarea
+function deleteTask(taskId) {
+    if (!confirm("Are you sure you want to delete this task?")) return;
+
+    axios.delete(`/api/tasks/delete/${taskId}/`)
+        .then(() => {
+            alert('Task deleted successfully!');
+            loadTasks();
+        })
+        .catch(error => console.error("Error deleting task:", error));
 }
 
 // Obtener los datos del formulario
