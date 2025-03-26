@@ -9,13 +9,8 @@
                 </div>
                 <div class="card-body">
                     <p>Are you sure you want to delete the task "{{ task.title }}"?</p>
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{% url 'task_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
-                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                        </div>
-                    </form>
+                    <button id="delete-button" class="btn btn-danger">Yes, Delete</button>
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </div>
